@@ -10,13 +10,17 @@ export const GetIds = async (
 ): Promise<string[] | null> => {
   try {
     const response = await api({
-      body: JSON.stringify({ params, action: "get_ids" }),
+      body: JSON.stringify({
+        params,
+        action: "get_ids",
+      }),
     });
+    if (response.status >= 400) throw new Error(await response.text());
 
-    const data = await response.json();
-    return data.result;
+    const data = (await response.json()).result as string[];
+    return data;
   } catch (error) {
-    console.error("getIds error -", error);
+    console.error("getIds error :", error);
     return null;
   }
 };

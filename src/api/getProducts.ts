@@ -12,8 +12,13 @@ export const GetProducts = async (
     const response = await api({
       body: JSON.stringify({ params, action: "get_items" }),
     });
-    const data = await response.json();
-    return data.result;
+
+    if (response.status >= 400) throw new Error(await response.text());
+
+    const data = (await response.json()).result as Product[];
+    return data.filter((item, index, arr) => {
+      return arr.findIndex((el) => el.id === item.id) === index;
+    });
   } catch (error) {
     console.error("getProducts", error);
     return null;
