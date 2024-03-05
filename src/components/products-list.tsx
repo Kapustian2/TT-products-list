@@ -1,6 +1,6 @@
-import { Product } from "../types/product";
+import { Product } from "@/types/product";
 
-export const ProductList = (products: Product[]) => {
+export const ProductList = (props: { products: Product[] }) => {
   return (
     <div>
       <table>
@@ -13,7 +13,7 @@ export const ProductList = (products: Product[]) => {
           </tr>
         </thead>
         <tbody>
-          {products.map((product) => (
+          {props.products.map((product) => (
             <tr key={product.id}>
               <td>{product.id}</td>
               <td>{product.product}</td>

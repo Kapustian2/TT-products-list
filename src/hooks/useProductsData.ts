@@ -1,5 +1,6 @@
 // Нужно получать данные из api по фильтрам, хук должен вернуть state(таблицу) и методы
 
+import { getFilteredProductsIds } from "@/api/getFilteredProductsIds";
 import { GetIds } from "@/api/getIds";
 import { GetProducts } from "@/api/getProducts";
 import { PAGINATION_LIMIT } from "@/constants";
@@ -9,23 +10,33 @@ import { useEffect, useState } from "react";
 export const useProductsData = () => {
   const [products, setProducts] = useState<Product[]>([]);
   const [page, setPage] = useState<number>(0);
+  const [filter, setFilter] = useState<Partial<Product>>();
 
   const nextPage = () => setPage(page + 1);
   const prevPage = () => setPage(page - 1);
 
   useEffect(() => {
-    async function fetchData() {
-      const ids = await GetIds({
-        limit: PAGINATION_LIMIT + 20,
-        offset: PAGINATION_LIMIT * page,
-      });
-      if (ids) {
-        const prods = await GetProducts({ ids });
-        if (prods) setProducts(prods.slice(0, 50));
+    const debounceTimer = setTimeout(() => {
+      async function fetchData() {
+        let ids: string[] | null = [];
+        if (filter && JSON.stringify(filter) !== "{}") {
+          ids = await getFilteredProductsIds(filter);
+        } else {
+          ids = await GetIds({
+            limit: PAGINATION_LIMIT + 20,
+            offset: PAGINATION_LIMIT * page,
+          });
+        }
+        if (ids) {
+          const prods = await GetProducts({ ids });
+          if (prods) setProducts(prods.slice(0, 50));
+        }
       }
-    }
-    fetchData();
-  }, [page]);
+      fetchData();
+      console.log("Requst");
+    }, 1000);
+    return () => clearTimeout(debounceTimer);
+  }, [filter, page]);
 
-  return { products, page, nextPage, prevPage };
+  return { products, page, nextPage, prevPage, setFilter };
 };
