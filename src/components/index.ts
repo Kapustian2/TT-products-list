@@ -1,4 +1,3 @@
-export * from "./products-list";
-export * from "./input";
-export * from "./pagination";
-export * from "./filters";
+export * from "./products-list/products-list";
+export * from "./pagination/pagination";
+export * from "./filters/filters";

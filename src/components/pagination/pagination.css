@@ -1,0 +1,18 @@
+.pagination-container {
+  display: flex;
+  flex-direction: row;
+  gap: 5px;
+  top: -10px;
+  justify-content: end;
+}
+
+.page {
+  display: inline-block;
+  padding: 3px 12px;
+  border: 1px solid #818181;
+  border-radius: 4px;
+}
+.page-controll {
+  width: 30px;
+  height: 30px;
+}

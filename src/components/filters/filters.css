@@ -1,0 +1,32 @@
+.filter-container {
+  display: flex;
+  flex-direction: column;
+  margin-top: 20px;
+  justify-content: center;
+  align-items: center;
+}
+
+.controllers {
+  display: flex;
+  flex-direction: row;
+  gap: 10px;
+  margin-bottom: 20px;
+}
+
+.filter {
+  width: 140px;
+  border-width: 1px;
+}
+
+.filter[data-filter-active="true"] {
+  border-width: 2px;
+}
+
+.title {
+  font-size: 25px;
+}
+
+.clear-filters {
+  width: 90px;
+  height: 30px;
+}

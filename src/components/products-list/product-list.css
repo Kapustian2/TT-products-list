@@ -1,0 +1,12 @@
+table {
+  width: 120vh;
+  height: 100vh;
+}
+
+td {
+  border-top: 1px solid #ccc;
+}
+
+tr:last-child td {
+  border-bottom: none;
+}

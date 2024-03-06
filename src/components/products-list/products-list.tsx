@@ -1,4 +1,5 @@
 import { Product } from "@/types/product";
+import "./product-list.css";
 
 export const ProductList = (props: { products: Product[] }) => {
   return (

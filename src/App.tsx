@@ -17,9 +17,19 @@ function App() {
 
   return (
     <div>
-      <Filters onFilterChange={setFilter} />
-      {!isLoading ? <ProductList products={products} /> : <div>Loading...</div>}
-      <Pagination currentPage={page} nextPage={nextPage} prevPage={prevPage} />
+      {!isLoading ? (
+        <>
+          <Filters onFilterChange={setFilter} />
+          <ProductList products={products} />
+          <Pagination
+            currentPage={page}
+            nextPage={nextPage}
+            prevPage={prevPage}
+          />
+        </>
+      ) : (
+        <div>Loading...</div>
+      )}
     </div>
   );
 }
