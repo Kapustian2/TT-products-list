@@ -11,13 +11,14 @@ export const useProductsData = () => {
   const [products, setProducts] = useState<Product[]>([]);
   const [page, setPage] = useState<number>(0);
   const [filter, setFilter] = useState<Partial<Product>>();
-
+  const [isLoading, setIsLoading] = useState<boolean>(true);
   const nextPage = () => setPage(page + 1);
   const prevPage = () => setPage(page - 1);
 
   useEffect(() => {
     const debounceTimer = setTimeout(() => {
       async function fetchData() {
+        setIsLoading(true);
         let ids: string[] | null = [];
         if (filter && JSON.stringify(filter) !== "{}") {
           ids = await getFilteredProductsIds(filter);
@@ -33,10 +34,10 @@ export const useProductsData = () => {
         }
       }
       fetchData();
-      console.log("Requst");
+      setIsLoading(false);
     }, 1000);
     return () => clearTimeout(debounceTimer);
-  }, [filter, page]);
+  }, [filter, page, isLoading]);
 
-  return { products, page, nextPage, prevPage, setFilter };
+  return { products, page, nextPage, prevPage, setFilter, isLoading };
 };
