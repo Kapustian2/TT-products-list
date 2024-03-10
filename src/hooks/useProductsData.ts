@@ -32,12 +32,12 @@ export const useProductsData = () => {
           const prods = await GetProducts({ ids });
           if (prods) setProducts(prods.slice(0, 50));
         }
+        setIsLoading(false);
       }
       fetchData();
-      setIsLoading(false);
     }, 1000);
     return () => clearTimeout(debounceTimer);
-  }, [filter, page, isLoading]);
+  }, [filter, page]);
 
   return { products, page, nextPage, prevPage, setFilter, isLoading };
 };
