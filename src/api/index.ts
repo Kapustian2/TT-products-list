@@ -8,7 +8,7 @@ interface FetchConfig extends RequestInit {}
 function createFetchInstance(config: FetchConfig) {
   return function (options?: RequestInit) {
     const mergedOptions: RequestInit = { ...config, ...options };
-    return fetch("http://api.valantis.store:40000/", mergedOptions);
+    return fetch("https://api.valantis.store:41000/", mergedOptions);
   };
 }
 
