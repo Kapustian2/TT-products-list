@@ -4,6 +4,7 @@ import path from "path";
 
 // https://vitejs.dev/config/
 export default defineConfig({
+  base: "https://kapustian2.github.io/tt-products-list/",
   resolve: {
     alias: {
       "@": path.resolve(__dirname, "./src"),
