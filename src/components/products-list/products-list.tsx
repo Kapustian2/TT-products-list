@@ -4,7 +4,7 @@ import "./product-list.css";
 export const ProductList = (props: { products: Product[] }) => {
   return (
     <div>
-      <table>
+      <table className="table">
         <thead>
           <tr>
             <th>id</th>
