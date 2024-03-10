@@ -4,29 +4,9 @@ import { getFilteredProductsIds } from "@/api/getFilteredProductsIds";
 import { GetIds } from "@/api/getIds";
 import { GetProducts } from "@/api/getProducts";
 import { PAGINATION_LIMIT } from "@/constants";
+import { retryCall } from "@/helpers";
 import { Product } from "@/types/product";
 import { useEffect, useState } from "react";
-
-function wait(delay: number) {
-  return new Promise((resolve) => setTimeout(resolve, delay));
-}
-
-async function fetchRetry(dataLoader: () => unknown, delay = 1000, tries = 5) {
-  let triesLeft = tries;
-  async function onError(err: Error) {
-    triesLeft = tries - 1;
-    if (!triesLeft) {
-      throw err;
-    }
-    await wait(delay);
-    return await fetchRetry(dataLoader, delay, triesLeft);
-  }
-  try {
-    await dataLoader();
-  } catch (error) {
-    onError(error as unknown as Error);
-  }
-}
 
 export const useProductsData = () => {
   const [products, setProducts] = useState<Product[]>([]);
@@ -56,7 +36,7 @@ export const useProductsData = () => {
 
         setIsLoading(false);
       }
-      fetchRetry(fetchData);
+      retryCall(fetchData);
     }, 1000);
     return () => clearTimeout(debounceTimer);
   }, [filter, page]);
