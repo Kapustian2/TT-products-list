@@ -7,6 +7,27 @@ import { PAGINATION_LIMIT } from "@/constants";
 import { Product } from "@/types/product";
 import { useEffect, useState } from "react";
 
+function wait(delay: number) {
+  return new Promise((resolve) => setTimeout(resolve, delay));
+}
+
+async function fetchRetry(dataLoader: () => unknown, delay = 1000, tries = 5) {
+  let triesLeft = tries;
+  async function onError(err: Error) {
+    triesLeft = tries - 1;
+    if (!triesLeft) {
+      throw err;
+    }
+    await wait(delay);
+    return await fetchRetry(dataLoader, delay, triesLeft);
+  }
+  try {
+    await dataLoader();
+  } catch (error) {
+    onError(error as unknown as Error);
+  }
+}
+
 export const useProductsData = () => {
   const [products, setProducts] = useState<Product[]>([]);
   const [page, setPage] = useState<number>(0);
@@ -32,9 +53,10 @@ export const useProductsData = () => {
           const prods = await GetProducts({ ids });
           if (prods) setProducts(prods.slice(0, 50));
         }
+
         setIsLoading(false);
       }
-      fetchData();
+      fetchRetry(fetchData);
     }, 1000);
     return () => clearTimeout(debounceTimer);
   }, [filter, page]);

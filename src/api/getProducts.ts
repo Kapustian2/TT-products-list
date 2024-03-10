@@ -21,6 +21,6 @@ export const GetProducts = async (
     });
   } catch (error) {
     console.error("getProducts", error);
-    return null;
+    throw error;
   }
 };

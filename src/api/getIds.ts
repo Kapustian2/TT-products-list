@@ -21,6 +21,6 @@ export const GetIds = async (
     return data;
   } catch (error) {
     console.error("getIds error :", error);
-    return null;
+    throw error;
   }
 };
